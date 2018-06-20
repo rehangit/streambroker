@@ -70,7 +70,7 @@ The service maintains database of following models
 video {
   id,
   name,
-  realLink
+  confidentialLink
 };
 
 stream {
