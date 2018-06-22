@@ -8,11 +8,15 @@ const props = {
   length: 100,
   confidentialLink: 'http://www.link.com',
 };
-const video = new Video(props);
+let video;
 
 test.before(async () => {
-  const conn = await connect();
-  conn.db.dropDatabase();
+  await connect();
+  video = await new Video(props).exec();
+});
+
+test.beforeEach(async () => {
+  await Video.remove({});
   await video.save();
 });
 
@@ -31,8 +35,10 @@ test('Video has schema properties', async t => {
 
 test('returns only selected properties', async t => {
   const found = await Video.findOne({});
+  console.log({ found });
   t.not(found, undefined);
-  t.is(found.name, video.name);
+  t.not(found, null);
+  t.is(found.name, props.name);
   t.is(found.length, props.length);
 
   t.is(found.confidentialLink, undefined);

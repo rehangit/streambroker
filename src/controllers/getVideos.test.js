@@ -18,6 +18,7 @@ test.before(async () => {
 test('gets videos', async t => {
   const videos = await getVideos();
 
+  t.is(typeof videos, 'array');
   t.is(videos.length, 1);
   t.is(videos[0].name, 'test video');
   t.is(videos[0].confidentialLink, undefined);
