@@ -1,7 +1,7 @@
 const test = require('ava');
 
 const connect = require('../db');
-const Video = require('./video');
+const VideoModel = require('./video');
 
 const props = {
   name: 'video name',
@@ -12,16 +12,16 @@ let video;
 
 test.before(async () => {
   await connect();
-  video = await new Video(props).exec();
 });
 
 test.beforeEach(async () => {
-  await Video.remove({});
+  await VideoModel.remove({});
+  video = await new VideoModel(props);
   await video.save();
 });
 
 test('model name is video', async t => {
-  t.is(Video.modelName, 'video');
+  t.is(VideoModel.modelName, 'video');
 });
 
 test('Video has schema properties', async t => {
@@ -33,18 +33,17 @@ test('Video has schema properties', async t => {
   t.is(video.confidentialLink, props.confidentialLink);
 });
 
-test('returns only selected properties', async t => {
-  const found = await Video.findOne({});
-  console.log({ found });
+test('hides confidentialLink in results', async t => {
+  const found = await VideoModel.findOne({});
   t.not(found, undefined);
-  t.not(found, null);
   t.is(found.name, props.name);
   t.is(found.length, props.length);
-
+  // ensure hidden property is not returned
   t.is(found.confidentialLink, undefined);
 });
 
-test('exposes hidden properties when selected', async t => {
-  const found = await Video.findOne({}).select('+confidentialLink');
+test('allows explicit access to confidentialLink', async t => {
+  const found = await VideoModel.findOne({}).select('+confidentialLink');
+  t.is(found.name, props.name);
   t.is(found.confidentialLink, props.confidentialLink);
 });

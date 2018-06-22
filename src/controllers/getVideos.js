@@ -1,6 +1,6 @@
-const Video = require('../models/video');
+const VideoModel = require('../models/video');
 
 module.exports = async () =>
-  Video.find()
+  VideoModel.find({})
     .lean()
     .exec();
