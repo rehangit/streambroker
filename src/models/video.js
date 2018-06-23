@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const cleaned = (d, r) => {
   r.id = r._id;
   delete r._id;
-  delete r.__v;
 };
 
 const videoSchema = new mongoose.Schema(
@@ -14,8 +13,9 @@ const videoSchema = new mongoose.Schema(
     confidentialLink: { type: String, select: false },
   },
   {
-    //    toJSON: { transform: cleaned },
+    toJSON: { transform: cleaned },
     toObject: { transform: cleaned },
+    versionKey: false,
   },
 );
 
