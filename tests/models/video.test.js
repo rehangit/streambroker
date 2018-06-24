@@ -1,7 +1,7 @@
 const test = require('ava');
 
-const connect = require('../db');
-const VideoModel = require('./video');
+const connect = require('../../src/db');
+const VideoModel = require('../../src/models/video');
 
 const props = {
   name: 'video name',
@@ -26,8 +26,6 @@ test('model name is video', async t => {
 
 test('Video has schema properties', async t => {
   t.not(video.id, undefined);
-  t.is(typeof video.id, 'string');
-  t.true(video.id.length > 1);
   t.is(video.name, props.name);
   t.is(video.length, props.length);
   t.is(video.confidentialLink, props.confidentialLink);

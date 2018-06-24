@@ -1,7 +1,6 @@
-const mongoose = require('mongoose');
 const test = require('ava');
 
-const dbConnect = require('./db');
+const dbConnect = require('../src/db');
 
 test('MONGO_URL is defined', t => {
   t.not(process.env.MONGO_URL, '');
@@ -10,6 +9,6 @@ test('MONGO_URL is defined', t => {
 
 test('db connects', async t => {
   const dbName = process.env.MONGO_URL.split('/').slice(-1)[0];
-  await dbConnect();
-  t.is(mongoose.connection.name, dbName);
+  const conn = await dbConnect();
+  t.is(conn.name, dbName);
 });
