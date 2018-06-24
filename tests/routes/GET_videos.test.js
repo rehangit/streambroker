@@ -2,7 +2,6 @@ const test = require('ava');
 const micro = require('micro');
 const listen = require('test-listen');
 const got = require('got');
-const db = require('../../src/db');
 const VideoModel = require('../../src/models/video');
 
 const app = require('../../src');
@@ -14,7 +13,6 @@ const rawVideoData = [1, 2, 3, 4, 5].map(n => ({
 }));
 
 test.before(async () => {
-  await db();
   await VideoModel.remove();
   await VideoModel.create(rawVideoData);
 });
@@ -26,5 +24,7 @@ test('GET /videos', async t => {
   const videos = res.body;
   t.true(videos instanceof Array);
   t.is(videos.length, rawVideoData.length);
-  t.deepEqual(videos.map(v => v.name), rawVideoData.map(d => d.name));
+
+  const expected = videos.map(v => v.name).sort((a, b) => (a < b ? -1 : 1));
+  t.deepEqual(expected, rawVideoData.map(d => d.name));
 });
