@@ -2,10 +2,10 @@ const test = require('ava');
 const micro = require('micro');
 const listen = require('test-listen');
 const got = require('got');
-const db = require('../src/db');
-const VideoModel = require('../src/models/video');
+const db = require('../../src/db');
+const VideoModel = require('../../src/models/video');
 
-const app = require('../src/index.js');
+const app = require('../../src');
 
 const rawVideoData = [1, 2, 3, 4, 5].map(n => ({
   name: `video ${n}`,
