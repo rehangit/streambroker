@@ -10,6 +10,7 @@ const jwtAuth = require('micro-jwt-auth')(
 
 const getVideos = require('./controllers/getVideos');
 const getUserStreams = require('./controllers/getUserStreams');
+const delUserStream = require('./controllers/delUserStream');
 
 const connect = require('./db');
 
@@ -39,7 +40,12 @@ module.exports = router(
   // get('/streams/video/videoId:', async (req, res) => {
   //   send(res, 200, []);
   // }),
-  // del('/streams/:streamId', async (req, res) => {
-  //   send(res, 200, []);
-  // }),
+  del(
+    '/streams/:streamId',
+    jwtAuth(async (req, res) => {
+      const userId = req.jwt.sub;
+      const streamId = req.params.streamId; // eslint-disable-line prefer-destructuring
+      send(res, 200, await delUserStream(userId, streamId));
+    }),
+  ),
 );
