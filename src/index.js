@@ -1,5 +1,5 @@
 const { send } = require('micro');
-const { router, get, del } = require('microrouter');
+const { router, get, del, post } = require('microrouter');
 const jwtAuth = require('micro-jwt-auth')(
   process.env.JWT_SECRET || 'secret123',
   {
@@ -11,6 +11,7 @@ const jwtAuth = require('micro-jwt-auth')(
 const getVideos = require('./controllers/getVideos');
 const getUserStreams = require('./controllers/getUserStreams');
 const delUserStream = require('./controllers/delUserStream');
+const createUserStream = require('./controllers/createUserStream');
 
 const connect = require('./db');
 
@@ -37,15 +38,20 @@ module.exports = router(
       else send(res, 404);
     }),
   ),
-  // get('/streams/video/videoId:', async (req, res) => {
-  //   send(res, 200, []);
-  // }),
   del(
     '/streams/:streamId',
     jwtAuth(async (req, res) => {
       const userId = req.jwt.sub;
       const streamId = req.params.streamId; // eslint-disable-line prefer-destructuring
       send(res, 200, await delUserStream(userId, streamId));
+    }),
+  ),
+  post(
+    '/streams/video/:videoId',
+    jwtAuth(async (req, res) => {
+      const userId = req.jwt.sub;
+      const videoId = req.params.videoId; // eslint-disable-line prefer-destructuring
+      send(res, 200, await createUserStream(userId, videoId));
     }),
   ),
 );

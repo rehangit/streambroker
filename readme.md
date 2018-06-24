@@ -55,7 +55,7 @@ This microservice is also deployable on heroku
   GET (user) - lists videoIds for all active video streams being played by the user 
   
 /streams/:videoId
-  GET (user) - generates and returns the short lived stream url for the video associated with videoId. This stream is counted towards the active video streams being watched by the user until manually removed or expires
+  POST (user) - generates and returns the short lived stream url for the video associated with videoId. This stream is counted towards the active video streams being watched by the user until manually removed or expires
 
 /streams/:videoId 
   DELETE (user) - removes videoId from the active list of streaming videos for user

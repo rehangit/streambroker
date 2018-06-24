@@ -1,6 +1,3 @@
-const {
-  Types: { ObjectId },
-} = require('mongoose');
 const StreamModel = require('../models/stream');
 
 module.exports = async (userId, id) =>
