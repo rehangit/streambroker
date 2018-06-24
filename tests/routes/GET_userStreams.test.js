@@ -3,6 +3,9 @@ const micro = require('micro');
 const listen = require('test-listen');
 const got = require('got');
 const jwt = require('jsonwebtoken');
+const {
+  Types: { ObjectId },
+} = require('mongoose');
 
 const StreamModel = require('../../src/models/stream');
 const app = require('../../src');
@@ -70,4 +73,36 @@ test('GET /streams with Auth token', async t => {
     })
     .sort((a, b) => (a.videoId < b.videoId ? -1 : 1));
   t.deepEqual(sortedResult, xyzStreams);
+});
+
+test('GET single /streams/:id with Auth token', async t => {
+  let res;
+  let error;
+  const presetId = ObjectId('1234567890ab').toHexString();
+
+  try {
+    await StreamModel.create({
+      id: presetId,
+      userId: 'user_xyz',
+      videoId: `preset_streamid_videoid`,
+      transientLink: `http://www.streamprovider.com/randomlink/preset`,
+      createdAt: new Date().toISOString(),
+    });
+
+    res = await got(`${url}/streams/${presetId}`, {
+      json: true,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch (err) {
+    error = err;
+  }
+
+  t.is(error, undefined);
+  t.not(res, undefined);
+  t.is(res.statusCode, 200);
+  t.true(res.body instanceof Array);
+  t.is(res.body.length, 1);
+  t.is(res.body[0].id, presetId);
 });

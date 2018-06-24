@@ -26,6 +26,14 @@ module.exports = router(
       send(res, 200, await getUserStreams(userId));
     }),
   ),
+  get(
+    '/streams/:id',
+    jwtAuth(async (req, res) => {
+      const userId = req.jwt.sub;
+      const streamId = req.params.id;
+      send(res, 200, await getUserStreams(userId, streamId));
+    }),
+  ),
   // get('/streams/video/videoId:', async (req, res) => {
   //   send(res, 200, []);
   // }),

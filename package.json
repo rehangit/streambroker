@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "micro",
-    "test": "MONGO_URL=mongodb://localhost:27017/test ava tests -s",
+    "test": "MONGO_URL=mongodb://localhost:27017/test ava tests -s --verbose",
     "lint": "eslint src"
   },
   "files": [
