@@ -14,14 +14,22 @@ const data = {
 test.before(async () => {
   await connect();
   await VideoModel.remove({});
-  const video = new VideoModel(data);
-  await video.save();
+  await new VideoModel(data).save();
 });
 
 test('gets videos', async t => {
   const videos = await getVideos();
-
+  t.true(videos instanceof Array);
   t.is(videos.length, 1);
-  t.is(videos[0].name, data.name);
-  t.is(videos[0].confidentialLink, undefined);
+});
+
+test('exposes only public fields', async t => {
+  const video = (await getVideos())[0];
+  // has correct name
+  t.is(video.name, data.name);
+
+  t.not(video.id, undefined);
+  t.is(video._id, undefined); // eslint-disable-line no-underscore-dangle
+  t.is(video.__v, undefined); // eslint-disable-line no-underscore-dangle
+  t.is(video.confidentialLink, undefined);
 });
