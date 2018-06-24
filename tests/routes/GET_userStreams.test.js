@@ -75,7 +75,7 @@ test('GET /streams with Auth token', async t => {
   t.deepEqual(sortedResult, xyzStreams);
 });
 
-test('GET single /streams/:id with Auth token', async t => {
+test('GET single existing /streams/:id with Auth token', async t => {
   let res;
   let error;
   const presetId = ObjectId('1234567890ab').toHexString();
@@ -100,9 +100,28 @@ test('GET single /streams/:id with Auth token', async t => {
   }
 
   t.is(error, undefined);
-  t.not(res, undefined);
+  t.not(res.body, undefined);
   t.is(res.statusCode, 200);
-  t.true(res.body instanceof Array);
-  t.is(res.body.length, 1);
-  t.is(res.body[0].id, presetId);
+  t.true(res.body instanceof Object);
+  t.is(res.body.id, presetId);
+});
+
+test('GET single non-existing /streams/:id with Auth token', async t => {
+  let error;
+  const nonExistingId = ObjectId('abababababab').toHexString();
+
+  try {
+    await got(`${url}/streams/${nonExistingId}`, {
+      json: true,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch (err) {
+    error = err;
+  }
+
+  t.not(error, undefined);
+  t.is(error.statusCode, 404);
+  t.true(error.statusMessage.includes('Not Found'));
 });

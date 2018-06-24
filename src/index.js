@@ -31,7 +31,9 @@ module.exports = router(
     jwtAuth(async (req, res) => {
       const userId = req.jwt.sub;
       const streamId = req.params.id;
-      send(res, 200, await getUserStreams(userId, streamId));
+      const streams = await getUserStreams(userId, streamId);
+      if (streams && streams.length) send(res, 200, streams[0]);
+      else send(res, 404);
     }),
   ),
   // get('/streams/video/videoId:', async (req, res) => {
