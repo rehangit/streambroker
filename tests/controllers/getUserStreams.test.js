@@ -19,7 +19,7 @@ const data = [
     createdAt: new Date().toISOString(),
   },
   {
-    userId: 'user_unknown',
+    userId: 'user_different',
     videoId: 'video_id_3',
     transientLink: 'http://www.streamprovider.com/randomlink3',
     createdAt: new Date().toISOString(),
@@ -29,7 +29,7 @@ const data = [
 test.before(async () => {
   await connect();
   await StreamModel.remove({});
-  await new StreamModel(data).save();
+  await StreamModel.create(data);
 });
 
 test('gets user streams', async t => {
