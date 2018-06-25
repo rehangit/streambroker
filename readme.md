@@ -11,10 +11,10 @@ and prevents a user watching more than 3 video streams concurrently.
 
 This service does not implement any UI as such. It provides backend support for following functions for the accompanying UI:
 
-* provides a list of available video streams for a user
+* provides a list of available video to stream
 * maintains a list of video streams being actively played by a user 
-  * start stream
-  * stop stream
+  * start a stream 
+  * stop a stream
 * possibly expire an active stream after duration of the stream
 
 ## Usage
@@ -35,6 +35,16 @@ Assuming you've got `now` installed and set up:
 ```bash
 $ now rehangit/streambroker
 ```
+
+One of the instance running on now: `https://streambroker-uqidgkqhpc.now.sh/`
+
+Try https://streambroker-uqidgkqhpc.now.sh/videos to see some sample data
+
+Using a JWT token (as explain below) you can use Postman to 
+`GET https://streambroker-uqidgkqhpc.now.sh/streams` to list a user streams
+`POST https://streambroker-uqidgkqhpc.now.sh/streams/video/:videoId` start streaming a video 
+`DELETE https://streambroker-uqidgkqhpc.now.sh/streams/:streamId` stop/remove a streaming video
+
 
 Alternative, deploy right now without even leaving the browser:
 
