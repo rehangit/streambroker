@@ -1,19 +1,17 @@
 {
-  "name": "strambroker",
+  "name": "streambroker",
   "version": "1.0.0",
   "description": "Stream Broker",
   "author": "Rehan Ahmad <rehanahmad@gmail.com>",
-  "repository": "rehangit/strambroker",
+  "repository": "rehangit/streambroker",
   "license": "MIT",
   "scripts": {
-    "start": "micro",
+    "start": "micro src/index.js",
     "dev": "micro-dev --cold",
     "test": "MONGO_URL=mongodb://localhost:27017/test ava tests -s --verbose",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "now": "now --dotenv=env/now.env"
   },
-  "files": [
-    "src/index.js"
-  ],
   "main": "src/index.js",
   "dependencies": {
     "micro": "^9.3.2",

@@ -105,6 +105,12 @@ Payload: `{
  "iat": 1529888559
 }`)
 
+An example token:
+```
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyX3h5eiIsImlhdCI6MTUyOTg4ODU1OSwianRpIjoiNmZjYjBkZjMtYmU1Yy00NzJlLThjOTItYTczYjZhNWVkOGIzIiwiZXhwIjoxNTI5ODkyMTY1fQ.olRWZqpUnedb3jVxz_a81NeHnEEgWg9mCcAqz9NOPfw
+```
+
+
 ### Transient Link Strategy
 
 When a stream is created for a signed in user against a videoId, a `transientLink` is generated to play the video. This link is mapped to the `confidentialLink` of the video which is normally not directly accessible. 
