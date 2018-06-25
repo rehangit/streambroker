@@ -7,6 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "micro",
+    "dev": "micro-dev --cold",
     "test": "MONGO_URL=mongodb://localhost:27017/test ava tests -s --verbose",
     "lint": "eslint src"
   },
@@ -15,7 +16,7 @@
   ],
   "main": "src/index.js",
   "dependencies": {
-    "micro": "^7.0.0",
+    "micro": "^9.3.2",
     "micro-jwt-auth": "^1.10.0",
     "microrouter": "^3.1.3",
     "mongoose": "^5.1.6"
@@ -30,6 +31,7 @@
     "eslint-plugin-prettier": "^2.6.0",
     "got": "^6.7.1",
     "jsonwebtoken": "^8.3.0",
+    "micro-dev": "^3.0.0",
     "prettier": "^1.13.5",
     "test-listen": "^1.0.1"
   }

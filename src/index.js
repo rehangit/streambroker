@@ -51,7 +51,8 @@ module.exports = router(
     jwtAuth(async (req, res) => {
       const userId = req.jwt.sub;
       const videoId = req.params.videoId; // eslint-disable-line prefer-destructuring
-      send(res, 200, await createUserStream(userId, videoId));
+      const stream = await createUserStream(userId, videoId);
+      send(res, stream ? 200 : 403, stream);
     }),
   ),
 );
