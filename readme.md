@@ -42,9 +42,11 @@ Alternative, deploy right now without even leaving the browser:
 
 ### heroku
 
-This microservice is also deployable on heroku
+This microservice is also deployable on heroku using the config included.
 
 ## Implementation Details
+
+### 
 
 ### Interface
 ```
@@ -54,11 +56,11 @@ This microservice is also deployable on heroku
 /streams
   GET (user) - lists videoIds for all active video streams being played by the user 
   
-/streams/:videoId
+/streams/video/:videoId
   POST (user) - generates and returns the short lived stream url for the video associated with videoId. This stream is counted towards the active video streams being watched by the user until manually removed or expires
 
-/streams/:videoId 
-  DELETE (user) - removes videoId from the active list of streaming videos for user
+/streams/:streamId 
+  DELETE (user) - removes streamId from the current list of streams for user
 
 ```
 
@@ -78,9 +80,39 @@ stream {
   userId,
   videoId,      
   transientLink,
+  createdAt,
 };
 
 ```
+
+### Token
+
+Only signed users can access the user API except `GET /video` which is public.
+A signed user is one with JWT Bearer token that is signed with a secret (default: `secret123`). The following info is expected in the token:
+
+Header: `{
+ "typ": "JWT",
+ "alg": "HS256"
+}`
+
+Payload: `{
+ "sub": "user_id",
+ "iat": "timestamp"
+}` 
+
+(e.g. `{
+ "sub": "user_xyz",
+ "iat": 1529888559
+}`)
+
+### Transient Link Strategy
+
+When a stream is created for a signed in user against a videoId, a `transientLink` is generated to play the video. This link is mapped to the `confidentialLink` of the video which is normally not directly accessible. 
+
+Current raw implementation exposes the `video.confidentialLink` directly in the `stream.transientLink`, however a future improvement can be implmented to issue a short lived signed JWT token containing the videoId or the video confidential link. In this scenario when the user would request to play the stream the token could be decoded and played if still valid. Otherwise the stream would be considered to have expired and would be removed from the user's current list of playing streams.
+
+
+
 
 ## License
 
